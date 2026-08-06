@@ -51,7 +51,7 @@ El dashboard permite visualizar el estado de los contenidos, las aprobaciones, l
 
 **Enlace al dashboard:**
 
-PEGAR_AQUÍ_EL_ENLACE_DEL_DASHBOARD
+(https://airtable.com/app8hXFVxZISymAOA/shro8Zj1WsWr8X7oQ/tblW8vd484GxBLazF)
 
 ## Documentación
 
