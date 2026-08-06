@@ -51,7 +51,10 @@ El dashboard permite visualizar el estado de los contenidos, las aprobaciones, l
 
 **Enlace al dashboard:**
 
-(https://airtable.com/app8hXFVxZISymAOA/shro8Zj1WsWr8X7oQ/tblW8vd484GxBLazF)
+https://airtable.com/app8hXFVxZISymAOA/shro8Zj1WsWr8X7oQ/tblW8vd484GxBLazF
+
+**Base de datos (modo lectura):**  
+https://airtable.com/invite/l?inviteId=invVqFGXy1BYSKVtG&inviteToken=9538f9c95da436b79715cd9379b3a96cd969920acd30d026c157063f70ca3abb&utm_medium=email&utm_source=product_team&utm_content=transactional-alerts
 
 ## Documentación
 
