@@ -27,7 +27,7 @@ El proyecto implementa un ecosistema de automatización para la generación, rev
 
 ## Arquitectura
 
-![Arquitectura general](screenshots/01_arquitectura_general.png)
+![Arquitectura general](01_arquitectura_general.png)
 
 ## Estructura del repositorio
 
