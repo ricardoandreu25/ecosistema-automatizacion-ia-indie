@@ -92,10 +92,11 @@ Esta estrategia permite:
 # Contenido del repositorio
 
 ```
-.
-├── README.md
+├── blueprints.
+    ├── Escenario_1_Generacion_Automatica_Contenidos.blueprint.json
+    ├── Escenario_1_Generacion_Automatica_Contenidos.blueprint.json
 ├── documentacion
-├── blueprints
+    ├── Trabajo_Final_AI_AUTOMATION.pdf
 ├── screenshots
 │   ├── figura1-arquitectura-general.png
 │   ├── figura2-escenario1-generacion.png
@@ -103,7 +104,8 @@ Esta estrategia permite:
 │   ├── figura4-ruta-rechazados.png
 │   ├── figura5-airtable-contenidos.png
 │   └── figura6-dashboard-control.png
-└── video demo
+├── README.md
+└── Video_Demo.mp4
 ```
 
 ---
