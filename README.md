@@ -126,19 +126,6 @@ Esta estrategia permite:
 
 # Video Demo
 
-En esta sección se encuentra la demostración del funcionamiento del ecosistema de automatización desarrollado.
-
-El video muestra:
-
-- La generación automática de contenidos mediante IA.
-- El funcionamiento del Escenario 1 en Make.
-- La consulta a la base de conocimiento y el uso de Text Aggregator.
-- La revisión editorial mediante Human-in-the-Loop.
-- Las rutas de aprobación y rechazo del Escenario 2.
-- La actualización automática de Airtable.
-- Las notificaciones enviadas a Slack.
-- El funcionamiento general del pipeline de automatización.
-
 **Archivo:**
 
 - `Video_Demo.mp4`
