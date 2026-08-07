@@ -1,70 +1,151 @@
-# Ecosistema de Automatización IA para Pipeline de Contenidos
+# Ecosistema de Automatización IA para la Gestión de Contenidos de Indie
 
-## Descripción
+Proyecto desarrollado como entrega final del curso de **Arquitecturas de Automatización con Inteligencia Artificial**.
 
-Proyecto final desarrollado para el curso Arquitectura de Automatización Inteligente de Coderhouse.
+El sistema automatiza de extremo a extremo el proceso de generación, revisión y aprobación de contenidos para redes sociales mediante la integración de **Make**, **Airtable**, **OpenAI** y **Slack**, incorporando un flujo de **Human-in-the-Loop (HITL)** y mecanismos de resiliencia mediante **Error Handlers**.
 
-El proyecto implementa un ecosistema de automatización para la generación, revisión y aprobación de contenidos digitales de Indie Punta del Este. La solución integra Make, Airtable, OpenAI y Slack para gestionar el ciclo completo de un contenido, desde el ingreso de una idea hasta su aprobación, rechazo o corrección.
+---
 
-## Funcionalidades principales
+# Tecnologías utilizadas
 
-- Generación automática de borradores mediante OpenAI.
-- Recuperación de contexto desde una base de conocimiento en Airtable.
-- Revisión editorial con Human in the Loop.
-- Rutas diferenciadas para contenidos aprobados y rechazados.
-- Regeneración automática según comentarios del revisor.
-- Manejo de errores mediante Error Handler y Resume.
-- Registro de estados y trazabilidad en Airtable.
-- Dashboard de control para el seguimiento del pipeline.
+- **Orquestador:** Make
+- **Base de datos:** Airtable
+- **Procesamiento IA:** OpenAI (GPT-4.1 Mini)
+- **Canal de salida:** Slack
 
-## Tecnologías utilizadas
+---
 
-- Make
-- Airtable
-- OpenAI
-- Slack
-- GitHub
+# Arquitectura del sistema
 
-## Arquitectura
+El proyecto se compone de dos escenarios principales.
 
-![Arquitectura general](screenshots/01_arquitectura_general.png)
+## Escenario 1 – Generación automática de contenidos
 
-## Estructura del repositorio
+1. Airtable detecta una nueva idea de contenido.
+2. Se consulta la base de conocimiento almacenada en Airtable.
+3. El módulo **Text Aggregator** reúne toda la información recuperada en un único bloque de contexto.
+4. OpenAI genera automáticamente el borrador del contenido.
+5. Airtable actualiza el registro con el borrador generado y cambia el estado a **En revisión**.
+6. Slack envía una notificación para que el contenido sea revisado por una persona.
+7. Si ocurre un error durante la llamada a OpenAI, un **Error Handler** registra la incidencia en Airtable y finaliza la ejecución mediante un módulo **Resume**, evitando la interrupción completa del escenario.
 
-- `blueprints/`: archivos exportados de los escenarios de Make.
-- `screenshots/`: capturas de arquitectura, escenarios, Airtable y dashboard.
-- `documentacion/`: documento técnico final en formato PDF.
+---
 
-## Escenarios
+## Escenario 2 – Revisión editorial (Human-in-the-Loop)
 
-### Escenario 1 – Generación automática de contenidos
+El segundo escenario comienza cuando un revisor actualiza el registro en Airtable.
 
-Detecta ideas con estado `Generando`, recupera contexto desde Airtable, genera un borrador con OpenAI, actualiza el registro a `En revisión` y envía una notificación mediante Slack.
+Un **Router** divide el flujo en dos rutas:
 
-### Escenario 2 – Revisión editorial y Human in the Loop
+### Ruta de aprobación
 
-Procesa la decisión del revisor. Si el contenido es aprobado, actualiza el registro y notifica el resultado. Si es rechazado, utiliza los comentarios editoriales para generar una nueva versión mediante OpenAI.
+- El contenido cambia al estado **Publicado**.
+- Airtable actualiza el registro.
+- Slack envía una notificación informando que el contenido fue aprobado.
 
-## Dashboard de control
+### Ruta de rechazo
 
-El dashboard permite visualizar el estado de los contenidos, las aprobaciones, los rechazos y los errores registrados durante la ejecución del sistema.
+- OpenAI genera automáticamente una nueva versión utilizando los comentarios del revisor.
+- Airtable reemplaza el borrador anterior por la nueva propuesta.
+- Slack informa que se generó una nueva versión para revisión.
 
-**Enlace al dashboard:**
+---
 
-https://airtable.com/app8hXFVxZISymAOA/shro8Zj1WsWr8X7oQ/tblW8vd484GxBLazF
+# Human-in-the-Loop (HITL)
 
-**Base de datos (modo lectura):**  
-https://airtable.com/invite/l?inviteId=invVqFGXy1BYSKVtG&inviteToken=9538f9c95da436b79715cd9379b3a96cd969920acd30d026c157063f70ca3abb&utm_medium=email&utm_source=product_team&utm_content=transactional-alerts
+Antes de cualquier publicación existe una validación humana obligatoria.
 
-## Documentación
+El revisor analiza el contenido generado por la IA y decide si:
 
-El documento técnico completo se encuentra en:
+- aprobar el contenido para su publicación;
+- rechazarlo indicando comentarios para generar una nueva versión.
 
-`documentacion/Trabajo_Final_IA_Automation.pdf`
+Este mecanismo evita publicaciones automáticas sin supervisión humana.
 
-## Autor
+---
 
-Ricardo Faustino Andreu Monteserin
+# Gestión de errores
 
-Trabajo Final – Arquitectura de Automatización Inteligente  
-Coderhouse
+El Escenario 1 incorpora un **Error Handler** asociado al módulo **OpenAI – Generate a response**.
+
+Ante un fallo durante la llamada a la API:
+
+- se registra la incidencia en Airtable;
+- el estado del contenido pasa a **Error**;
+- se conserva la trazabilidad del proceso;
+- el escenario continúa mediante un módulo **Resume**, evitando detener futuras ejecuciones del flujo.
+
+---
+
+# Optimización implementada
+
+Para optimizar el consumo de la API de OpenAI se incorporó un **Text Aggregator**, que consolida toda la información recuperada desde la base de conocimiento antes de enviarla al modelo.
+
+Esta estrategia permite:
+
+- reducir la cantidad de llamadas a OpenAI;
+- disminuir el consumo de créditos;
+- proporcionar un contexto más completo para la generación del contenido.
+
+---
+
+# Contenido del repositorio
+
+```
+.
+├── README.md
+├── Documentacion.pdf
+├── Pipeline_Contenidos_IA.blueprint
+├── figuras
+│   ├── figura1-arquitectura-general.png
+│   ├── figura2-escenario1-generacion.png
+│   ├── figura3-ruta-aprobados.png
+│   ├── figura4-ruta-rechazados.png
+│   ├── figura5-airtable-contenidos.png
+│   └── figura6-dashboard-control.png
+└── evidencias
+```
+
+---
+
+# Funcionalidades implementadas
+
+- Generación automática de contenidos mediante IA.
+- Base de conocimiento administrada en Airtable.
+- Recuperación de contexto mediante Search Records.
+- Consolidación del contexto utilizando Text Aggregator.
+- Generación automática de borradores con OpenAI.
+- Actualización automática de estados en Airtable.
+- Notificaciones automáticas mediante Slack.
+- Validación humana (Human-in-the-Loop).
+- Regeneración automática de contenidos rechazados.
+- Gestión de errores mediante Error Handler y Resume.
+- Dashboard de control en Airtable para el seguimiento del pipeline.
+
+---
+
+# Evidencias incluidas
+
+El repositorio contiene:
+
+- Documento PDF con la arquitectura, documentación técnica y explicación del sistema.
+- Blueprint (.blueprint) del flujo desarrollado en Make.
+- Capturas de pantalla de los escenarios implementados.
+- Captura de la base de datos en Airtable.
+- Captura del Dashboard de control.
+- Evidencias del funcionamiento de los escenarios.
+
+---
+
+## Enlaces
+
+- Enlace al Dashboard de Control: https://airtable.com/app8hXFVxZISymAOA/shro8Zj1WsWr8X7oQ/tblW8vd484GxBLazF
+- Base de datos (Airtable - modo lectura): https://airtable.com/...](https://airtable.com/invite/l?inviteId=invVqFGXy1BYSKVtG&inviteToken=9538f9c95da436b79715cd9379b3a96cd969920acd30d026c157063f70ca3abb&utm_medium=email&utm_source=product_team&utm_content=transactional-alerts
+
+---
+
+# Autor
+
+**Ricardo Faustino Andreu Monteserin**
+
+Entrega Final – Arquitecturas de Automatización con Inteligencia Artificial.
