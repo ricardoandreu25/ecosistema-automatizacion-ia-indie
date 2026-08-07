@@ -10,7 +10,7 @@ El sistema automatiza de extremo a extremo el proceso de generación, revisión 
 
 - **Orquestador:** Make
 - **Base de datos:** Airtable
-- **Procesamiento IA:** OpenAI (GPT-4.1 Mini)
+- **Procesamiento IA:** OpenAI (GPT-5.6-terra)
 - **Canal de salida:** Slack
 
 ---
@@ -94,16 +94,16 @@ Esta estrategia permite:
 ```
 .
 ├── README.md
-├── Documentacion.pdf
-├── Pipeline_Contenidos_IA.blueprint
-├── figuras
+├── documentacion
+├── blueprints
+├── screenshots
 │   ├── figura1-arquitectura-general.png
 │   ├── figura2-escenario1-generacion.png
 │   ├── figura3-ruta-aprobados.png
 │   ├── figura4-ruta-rechazados.png
 │   ├── figura5-airtable-contenidos.png
 │   └── figura6-dashboard-control.png
-└── evidencias
+└── video demo
 ```
 
 ---
@@ -121,19 +121,6 @@ Esta estrategia permite:
 - Regeneración automática de contenidos rechazados.
 - Gestión de errores mediante Error Handler y Resume.
 - Dashboard de control en Airtable para el seguimiento del pipeline.
-
----
-
-# Evidencias incluidas
-
-El repositorio contiene:
-
-- Documento PDF con la arquitectura, documentación técnica y explicación del sistema.
-- Blueprint (.blueprint) del flujo desarrollado en Make.
-- Capturas de pantalla de los escenarios implementados.
-- Captura de la base de datos en Airtable.
-- Captura del Dashboard de control.
-- Evidencias del funcionamiento de los escenarios.
 
 ---
 
